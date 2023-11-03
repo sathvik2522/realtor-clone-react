@@ -90,7 +90,11 @@ export default function CreateListing() {
     let location;
     if (geolocationEnabled) {
       const response = await fetch(
+<<<<<<< HEAD
         `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${process.env.REACT_APP_GEOCODE_API_KEY}`
+=======
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=`
+>>>>>>> origin/main
       );
       const data = await response.json();
       console.log(data);
