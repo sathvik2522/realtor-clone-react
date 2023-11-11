@@ -1,0 +1,28 @@
+# Secure Communication with AES Encryption
+
+This Python program allows secure communication with AES encryption and decryption capabilities. Users can encrypt and decrypt messages using a shared key calculated through the Diffie-Hellman key exchange method.
+
+## Features
+
+- Diffie-Hellman key exchange to derive a shared key.
+- AES encryption and decryption with user-provided keys.
+- User-friendly command-line interface.
+- Exception handling for error scenarios.
+
+## Usage
+
+1. Run the program in a Python environment.
+2. Follow the prompts to provide the input parameters:
+   - Enter the initial values for the Diffie-Hellman key exchange: `g_e`, `g_c`, `N_e`, `N_c`, `x`, and `gy_modN`.
+   - Enter the IV (Initialization Vector) in hexadecimal format.
+   - Enter plaintext and ciphertext in hexadecimal format.
+3. The program will calculate the shared key, perform encryption and decryption.
+4. The results will be presented in a readable format.
+
+## Requirements
+
+- Python 3.x
+- `pycryptodome` library (can be installed via pip)
+
+```bash
+pip install pycryptodome
