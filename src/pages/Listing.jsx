@@ -5,7 +5,6 @@ import { useParams } from "react-router-dom";
 import Spinner from "../components/spinner";
 import { db } from "../firebase";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore from "swiper";
 import {
   EffectFade,
   Autoplay,
@@ -23,7 +22,7 @@ import {
 } from "react-icons/fa";
 import { getAuth } from "firebase/auth";
 import Contact from "../components/Contact";
-
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 export default function Listing() {
   const auth = getAuth();
@@ -32,7 +31,7 @@ export default function Listing() {
   const [loading, setLoading] = useState(true);
   const [shareLinkCopied, setShareLinkCopied] = useState(false);
   const [contactLandlord, setContactLandlord] = useState(false);
-  SwiperCore.use([Autoplay, Navigation, Pagination]);
+ 
   useEffect(() => {
     async function fetchListing() {
       const docRef = doc(db, "listings", params.listingId);
@@ -50,11 +49,11 @@ export default function Listing() {
   return (
     <main>
       <Swiper
+        modules={[Navigation, Pagination, Autoplay, EffectFade]}
         slidesPerView={1}
         navigation
-        pagination={{ type: "progressbar" }}
+        pagination={{ clickable: true, type: "progressbar" }}
         effect="fade"
-        modules={[EffectFade]}
         autoplay={{ delay: 3000 }}
       >
         {listing.imgUrls.map((url, index) => (
@@ -69,6 +68,8 @@ export default function Listing() {
           </SwiperSlide>
         ))}
       </Swiper>
+      
+
       <div
         className="fixed top-[13%] right-[3%] z-10 bg-white cursor-pointer border-2 border-gray-400 rounded-full w-12 h-12 flex justify-center items-center"
         onClick={() => {
@@ -150,7 +151,26 @@ export default function Listing() {
             <Contact userRef={listing.userRef} listing={listing} />
           )}
         </div>
-       
+        <div className="w-full h-[200px] md:h-[400px] z-10 overflow-x-hidden mt-6 md:mt-0 md:ml-2">
+          <MapContainer
+            center={[listing.geolocation.lat, listing.geolocation.lng]}
+            zoom={13}
+            scrollWheelZoom={false}
+            style={{ height: "100%", width: "100%" }}
+          >
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker
+              position={[listing.geolocation.lat, listing.geolocation.lng]}
+            >
+              <Popup>
+                {listing.address}
+              </Popup>
+            </Marker>
+          </MapContainer>
+        </div>
       </div>
     </main>
   );
